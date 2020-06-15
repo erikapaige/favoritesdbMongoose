@@ -1,7 +1,12 @@
 const { Schema, model } = require('mongoose')
 
-module.exports = model('Game', new Schema({
+const Game = new Schema({
   title: String,
   type: String,
-  family: Boolean
-}))
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
+})
+
+module.exports = model('Game', Game)

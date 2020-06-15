@@ -1,7 +1,12 @@
 const { Schema, model } = require('mongoose')
 
-module.exports = model('Food', new Schema({
+const Food = new Schema({
   name: String,
   type: String,
-  delicious: Boolean
-}))
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
+})
+
+module.exports = model('Food', Food)
