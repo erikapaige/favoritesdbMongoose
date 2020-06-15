@@ -1,9 +1,10 @@
 const router = require('express').Router()
 
+router.use('/api', require('./userRoutes.js'))
 router.use('/api', require('./bookRoutes.js'))
-router.use('/api', require('./foodRoutes'))
-router.use('/api', require('./gameRoutes'))
-router.use('/api', require('./movieRoutes'))
+router.use('/api', require('./foodRoutes.js'))
+router.use('/api', require('./gameRoutes.js'))
+router.use('/api', require('./movieRoutes.js'))
 // router.use('/api', require('./songRoutes'))
 
 module.exports = router
