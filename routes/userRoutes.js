@@ -23,7 +23,7 @@ router.post('/users/login', (req, res) => {
 //   .then((users) => res.json(users))
 //   .catch(err => console.error(err))
 // })
-// // GET ONE USER (aka login)
+// GET ONE USER (aka login)
 // router.get('/users/:id', (req, res) => {
 //   User.findById(req.params.id)
 //     // specify the field want populated
