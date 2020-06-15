@@ -1,37 +1,18 @@
 const router = require('express').Router()
-const { Game } = require('../models')
+// need to bring in both because of post route
+const { Game, User } = require('../models')
 
-// GET all people
-router.get('/game', (req, res) => {
+// VIEW ALL POSTS THAT EXIST
+router.get('/games', (req, res) => {
   Game.find()
-    .then(game => res.json(game))
+    .populate('author')
+    .then(games => res.json(games))
     .catch(err => console.error(err))
 })
 
-// GET one game
-router.get('/game/:id', (req, res) => {
-  Game.findById(req.params.id)
-    .then(game => res.json(game))
-    .catch(err => console.error(err))
-})
-
-// POST one game
-router.post('/game', (req, res) => {
+router.post('/games', (req, res) => {
   Game.create(req.body)
-    .then(game => res.json(game))
-    .catch(err => console.error(err))
-})
-
-// PUT (UPDATE) one game
-router.put('/game/:id', (req, res) => {
-  Game.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => res.sendStatus(200))
-    .catch(err => console.error(err))
-})
-
-// DELETE one game
-router.delete('/game/:id', (req, res) => {
-  Game.findByIdAndDelete(req.params.id)
+    .then(games => User.findByIdAndUpdate(req.body.author, { $push: { games: games._id } }))
     .then(() => res.sendStatus(200))
     .catch(err => console.error(err))
 })

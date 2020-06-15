@@ -1,37 +1,18 @@
 const router = require('express').Router()
-const { Movie } = require('../models')
+// need to bring in both because of post route
+const { Movie, User } = require('../models')
 
-// GET all people
-router.get('/movie', (req, res) => {
+// VIEW ALL POSTS THAT EXIST
+router.get('/movies', (req, res) => {
   Movie.find()
-    .then(movie => res.json(movie))
+    .populate('author')
+    .then(movies => res.json(movies))
     .catch(err => console.error(err))
 })
 
-// GET one movie
-router.get('/movie/:id', (req, res) => {
-  Movie.findById(req.params.id)
-    .then(movie => res.json(movie))
-    .catch(err => console.error(err))
-})
-
-// POST one movie
-router.post('/movie', (req, res) => {
+router.post('/movies', (req, res) => {
   Movie.create(req.body)
-    .then(movie => res.json(movie))
-    .catch(err => console.error(err))
-})
-
-// PUT (UPDATE) one movie
-router.put('/movie/:id', (req, res) => {
-  Movie.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => res.sendStatus(200))
-    .catch(err => console.error(err))
-})
-
-// DELETE one movie
-router.delete('/movie/:id', (req, res) => {
-  Movie.findByIdAndDelete(req.params.id)
+    .then(movies => User.findByIdAndUpdate(req.body.author, { $push: { movies: movies._id } }))
     .then(() => res.sendStatus(200))
     .catch(err => console.error(err))
 })
